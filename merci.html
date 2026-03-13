@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merci – Harmonie & Résonance</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --violet-deep: #120720;
+  --violet-mid: #2d1555;
+  --violet-light: #6b3fa0;
+  --violet-pale: #c9a8e8;
+  --gold: #c9a84c;
+  --gold-light: #e8cf88;
+  --cream: #faf6f0;
+  --text-muted: rgba(250,246,240,0.6);
+  --text-dim: rgba(250,246,240,0.35);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--violet-deep);
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+.o1 { width: 600px; height: 600px; background: #7b3fa0; top: -200px; right: -150px; }
+.o2 { width: 450px; height: 450px; background: #c9a84c; bottom: -100px; left: -150px; }
+.o3 { width: 350px; height: 350px; background: #3d1a7a; top: 50%; left: 45%; }
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 70px 24px 100px;
+  text-align: center;
+}
+
+/* CONFIRMATION ICON */
+.check-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.12);
+  border: 1.5px solid rgba(201,168,76,0.45);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 32px;
+  font-size: 32px;
+  animation: popIn .6s cubic-bezier(.17,.67,.35,1.3) forwards;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* TITRE */
+.pre-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--violet-pale);
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: fadeUp .7s ease .3s forwards;
+}
+
+.main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 8vw, 72px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--cream);
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp .7s ease .45s forwards;
+}
+
+.main-title span { color: var(--gold-light); font-style: italic; }
+
+.gold-line {
+  width: 70px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 24px auto;
+  opacity: 0;
+  animation: fadeUp .7s ease .6s forwards;
+}
+
+.confirm-text {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 52px;
+  opacity: 0;
+  animation: fadeUp .7s ease .75s forwards;
+}
+
+.confirm-text strong { color: var(--cream); font-weight: 500; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* DATE REMINDER */
+.date-reminder {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(201,168,76,0.22);
+  border-radius: 16px;
+  padding: 18px 36px;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp .7s ease .9s forwards;
+}
+.dr-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.dr-label { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+.dr-val { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--cream); }
+.dr-sep { width: 1px; height: 36px; background: rgba(201,168,76,0.18); }
+
+/* COMPTE À REBOURS */
+.countdown-section {
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp .7s ease 1.05s forwards;
+}
+
+.countdown-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cd-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(201,168,76,0.2);
+  border-radius: 16px;
+  padding: 20px 24px;
+  min-width: 90px;
+}
+
+.cd-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--gold-light);
+  line-height: 1;
+  min-width: 60px;
+  text-align: center;
+}
+
+.cd-unit {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ACTIONS */
+.actions-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp .7s ease 1.2s forwards;
+}
+
+.action-card {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(201,168,76,0.18);
+  border-radius: 18px;
+  padding: 28px 24px;
+  text-decoration: none;
+  transition: border-color .3s, transform .3s;
+  display: block;
+}
+
+.action-card:hover {
+  border-color: rgba(201,168,76,0.4);
+  transform: translateY(-3px);
+}
+
+.ac-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+
+.ac-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.ac-text {
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.ac-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 40px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity .25s;
+}
+
+.ac-btn.gold {
+  background: linear-gradient(130deg, #a87d28, #e8cf88, #c9a84c);
+  color: var(--violet-deep);
+}
+
+.ac-btn.outline {
+  background: transparent;
+  border: 0.5px solid rgba(201,168,76,0.4);
+  color: var(--gold-light);
+}
+
+.ac-btn:hover { opacity: .8; }
+
+/* CALENDAR LINKS */
+.calendar-section {
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp .7s ease 1.35s forwards;
+}
+
+.cal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.cal-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.cal-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.cal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border: 0.5px solid rgba(201,168,76,0.28);
+  color: var(--cream);
+  background: rgba(255,255,255,0.04);
+  transition: border-color .25s, background .25s;
+}
+
+.cal-btn:hover {
+  border-color: rgba(201,168,76,0.5);
+  background: rgba(255,255,255,0.08);
+}
+
+.cal-icon { font-size: 16px; }
+
+/* MESSAGE FINAL */
+.final-message {
+  opacity: 0;
+  animation: fadeUp .7s ease 1.5s forwards;
+}
+
+.fm-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--violet-pale);
+  max-width: 500px;
+  margin: 0 auto 12px;
+}
+
+.fm-sign {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 60px;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 500px) {
+  .date-reminder { flex-direction: column; gap: 14px; padding: 18px 24px; }
+  .dr-sep { width: 40px; height: 0.5px; }
+  .cd-block { min-width: 70px; padding: 16px 16px; }
+  .cd-num { font-size: 38px; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div class="wrap">
+
+  <!-- ICÔNE CONFIRMATION -->
+  <div class="check-circle">✦</div>
+
+  <!-- TITRE -->
+  <p class="pre-title">Votre place est réservée</p>
+  <h1 class="main-title">À très vite<br><span>le 14 avril !</span></h1>
+  <div class="gold-line"></div>
+
+  <p class="confirm-text">
+    Merci pour votre inscription ! Vous allez recevoir un email de confirmation dans quelques minutes.<br><br>
+    Rendez-vous le <strong>lundi 14 avril à 20h00</strong> pour vivre ensemble cette soirée unique autour du soin à distance et de l'harmonie corps-esprit-énergie.
+  </p>
+
+  <!-- DATE REMINDER -->
+  <div class="date-reminder">
+    <div class="dr-item"><span class="dr-label">Date</span><span class="dr-val">14 Avril</span></div>
+    <div class="dr-sep"></div>
+    <div class="dr-item"><span class="dr-label">Heure</span><span class="dr-val">20h00</span></div>
+    <div class="dr-sep"></div>
+    <div class="dr-item"><span class="dr-label">Format</span><span class="dr-val">En ligne</span></div>
+  </div>
+
+  <!-- COMPTE À REBOURS -->
+  <div class="countdown-section">
+    <p class="countdown-label">Le webinaire commence dans</p>
+    <div class="countdown-grid">
+      <div class="cd-block"><span class="cd-num" id="cd-days">--</span><span class="cd-unit">Jours</span></div>
+      <div class="cd-block"><span class="cd-num" id="cd-hours">--</span><span class="cd-unit">Heures</span></div>
+      <div class="cd-block"><span class="cd-num" id="cd-mins">--</span><span class="cd-unit">Minutes</span></div>
+      <div class="cd-block"><span class="cd-num" id="cd-secs">--</span><span class="cd-unit">Secondes</span></div>
+    </div>
+  </div>
+
+  <!-- ACTIONS : GROUPE + CALENDRIER -->
+  <div class="actions-section">
+    <div class="action-card">
+      <span class="ac-icon">💬</span>
+      <h3 class="ac-title">Rejoignez notre groupe privé</h3>
+      <p class="ac-text">Retrouvez la communauté, posez vos questions en avance et préparez-vous au mieux pour la soirée.</p>
+      <a href="VOTRE_LIEN_GROUPE_ICI" class="ac-btn gold" target="_blank">Rejoindre le groupe</a>
+    </div>
+    <div class="action-card">
+      <span class="ac-icon">🌿</span>
+      <h3 class="ac-title">Préparez votre espace</h3>
+      <p class="ac-text">Pour profiter pleinement du soin à distance, installez-vous dans un endroit calme, avec un casque si possible.</p>
+      <span class="ac-btn outline">Bon à savoir</span>
+    </div>
+  </div>
+
+  <!-- AJOUTER AU CALENDRIER -->
+  <div class="calendar-section">
+    <h3 class="cal-title">Ne pas oublier le rendez-vous</h3>
+    <p class="cal-sub">Ajoutez le webinaire directement à votre agenda</p>
+    <div class="cal-buttons">
+      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Webinaire+Harmonie+%26+R%C3%A9sonance&dates=20250414T180000Z/20250414T200000Z&details=Webinaire+gratuit+avec+Aur%C3%A9lie+Perrier+%26+Laureline+Brochot&location=En+ligne" target="_blank" class="cal-btn">
+        <span class="cal-icon">📅</span> Google Agenda
+      </a>
+      <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20250414T200000%0ADTEND:20250414T220000%0ASUMMARY:Webinaire%20Harmonie%20%26%20R%C3%A9sonance%0ADESCRIPTION:Webinaire%20gratuit%20avec%20Aur%C3%A9lie%20Perrier%20%26%20Laureline%20Brochot%0AEND:VEVENT%0AEND:VCALENDAR" download="webinaire-harmonie-resonance.ics" class="cal-btn">
+        <span class="cal-icon">🍎</span> Apple / Outlook
+      </a>
+    </div>
+  </div>
+
+  <!-- MESSAGE FINAL -->
+  <div class="final-message">
+    <div class="gold-line"></div>
+    <p class="fm-text">"Votre présence le 14 avril est déjà le premier pas vers votre transformation."</p>
+    <p class="fm-sign">— Aurélie &amp; Laureline</p>
+  </div>
+
+  <footer>© 2025 Harmonie &amp; Résonance · Aurélie Perrier &amp; Laureline Brochot</footer>
+
+</div>
+
+<script>
+// COMPTE À REBOURS vers le 14 avril 2025 à 20h00
+const target = new Date('2025-04-14T20:00:00');
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = target - now;
+
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent  = '00';
+    document.getElementById('cd-hours').textContent = '00';
+    document.getElementById('cd-mins').textContent  = '00';
+    document.getElementById('cd-secs').textContent  = '00';
+    return;
+  }
+
+  const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs  = Math.floor((diff % (1000 * 60)) / 1000);
+
+  document.getElementById('cd-days').textContent  = String(days).padStart(2, '0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
+  document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
